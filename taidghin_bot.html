@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Taidhgín Ollscoil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/rivescript@latest/dist/rivescript.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+    <script src="https://kit.fontawesome.com/d539734335.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="navbar">
+      <p id="taighin" onclick="window.location='index.html'">Taidhgín</p>
+      <i class="fas fa-comments navMessage"></i>
+    </div>
+    <div class="bot-container">
+      <div class="bg-modal">
+        <div class="chatlogs">
+          <div class="messages"></div>
+        </div>
+        <div class="dictPopup">
+          <div class="dictText">
+            Dictionary TBC
+          </div>
+          <i class="far fa-window-close closeDict" onclick="closeDict()"></i>
+        </div>
+        <form class="chatform">
+          <input id="user_input" type="text" autocomplete="off">
+          <button type="submit" class="message-button" onclick="chat()"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+      <div class="audioDiv">
+        <div class="record">Click to Record Answer</div>
+        <span class="checkSpan"><input type="checkbox" id="autoplay" checked>Autoplay</span>
+        <audio id="audio" src='' controls></audio>
+      </div>
+      <div class="dialectSelection">
+        <i>Choose a dialect for Taighín:</i> <br>
+        <button id="connemaraCheck" onclick="dialectSelect('connemara')">Connemara (male)</button>
+        <button id="donegalCheck" onclick="dialectSelect('donegal')">Donegal (female)</button>
+        <button id="kerryCheck" onclick="dialectSelect('kerry')">Kerry (female)</button>
+      </div>
+    </div>
+    <script src="js/ollscoil.js"></script>
+    <script src="js/Rivescript.js"></script>
+    <script src="js/Questions.js"></script>
+    <script src="js/chatbotAudio.js"></script>
+    <script src="js/chatbotDb.js"></script>
+  </body>
+</html>
