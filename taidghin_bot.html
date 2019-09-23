@@ -15,6 +15,13 @@
       <p id="taighin" onclick="window.location='index.html'">Taidhgín</p>
       <i class="fas fa-comments navMessage"></i>
     </div>
+    <div class="monkey-ctn">
+      <div class="monkey-img">
+        <video id="monkey-vid" controls loop autoplay="autoplay">
+          <source src="img/chimp_talking.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
     <div class="bot-container">
       <div class="bg-modal">
         <div class="chatlogs">
@@ -34,13 +41,32 @@
       <div class="audioDiv">
         <div class="record">Click to Record Answer</div>
         <span class="checkSpan"><input type="checkbox" id="autoplay" checked>Autoplay</span>
-        <audio id="audio" src='' controls></audio>
+        <span class="checkMonkey"><input type="checkbox" id="monkeyCheck">Show Monkey</span>
+        <!--<audio id="audio" src='' controls></audio>-->
       </div>
       <div class="dialectSelection">
         <i>Choose a dialect for Taighín:</i> <br>
         <button id="connemaraCheck" onclick="dialectSelect('connemara')">Connemara (male)</button>
         <button id="donegalCheck" onclick="dialectSelect('donegal')">Donegal (female)</button>
         <button id="kerryCheck" onclick="dialectSelect('kerry')">Kerry (female)</button>
+      </div>
+      <div class="bot-contents">
+        <button class="bot-collapsable" id="BriathraNeamhrialta" onclick="">Briathra Neamhrialta</button>
+        <div class="bot-content">
+          <ul>
+            <li id="" onclick="load('abairAC')">Abair</li>
+            <li id="" onclick="load('beirAC')">Beir</li>
+            <li id="" onclick="load('biAC')">Bí</li>
+            <li id="" onclick="load('cloisAC')">Clois</li>
+            <li id="" onclick="load('deanAC')">Déan</li>
+            <li id="" onclick="load('faighAC')">Faigh</li>
+            <li id="" onclick="load('feic')">Feic</li>
+            <li id="" onclick="load('ithAC')">Ith</li>
+            <li id="" onclick="load('tabhairAC')">Tabhair</li>
+            <li id="" onclick="load('tarAC')">Tar</li>
+            <li id="" onclick="load('teighAC')">Téigh</li>
+          </ul>
+        </div>
       </div>
     </div>
     <script src="js/ollscoil.js"></script>

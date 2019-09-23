@@ -96,7 +96,6 @@ function searchNames(name){
 function storeName(name){
   play = true;
   userName = name;
-  botObj.username = userName;
   var slName = searchNames(name);
   if(slName) localStorage.setItem("name", slName);
   else localStorage.setItem("name", name);
@@ -158,7 +157,7 @@ function triailAris(){
   }
   else if(wrongCount == 4){
     var link =   "https://www.teanglann.ie/ga/gram/" + thisVerb;
-    thisHint = "<b>Hint:</b> <a href=\"javascript:void(0)\" onclick=\"openHint()\"><button class='rive-button'>www.teanglann.ie</button></a>"
+    thisHint = "<b>Hint:</b> <a href=\"javascript:void(0)\" onclick=\"openHintWindowPopup()\"><button class='rive-button'>www.teanglann.ie</button></a>"
   }
   else if(wrongCount == 6){
     thisHint = "<i><b>Freagra:</b></i> " + currentQuestion.answer + ". ";
@@ -172,8 +171,16 @@ function triailAris(){
   return rep[ran] + getName() + ". <br><br>" + thisHint;
 }
 
-function openHint(){
-  window.open("https://www.teanglann.ie/ga/gram/" + thisVerb, "_blank")
+function openHintWindowPopup(){
+  var url  = "https://www.teanglann.ie/ga/gram/" + thisVerb;
+  window.open(url,'popUpWindow','height=500,width=700,left=50,top=50,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+}
+
+function missingContentMessage(){
+  var missingCont = ["Ó, níl na ceisteanna réidh don chuid seo go fóillín. Bogfaimid ar aghaigh go dtí an chéad chuid eile.", "A " + getName() + " níl an chuid seo ullmhaithe i gceart duit go fóill. Bogfaimid " +
+  "ar aghaidh.", "A " + getName() + " bogfaimid ar aghaidh is cosúil nach bhfuil an chuid seo réidh.", "A " + getName() + "bogfaimid ar aghaidh níor smaoinigh mé ar cheisteanna duit anseo go fóill."];
+  var ran = getRandomIntInclusive(0, missingCont.length - 1);
+  return missingCont[ran];
 }
 
 function nilToCeim(){

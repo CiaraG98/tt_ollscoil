@@ -140,6 +140,26 @@
   return "";
 < object
 
+> object askName javascript
+  return askName();
+< object
+
+> object storeName javascript
+  return storeName(args[0]);
+< object
+
+> object getMissingMessage javascript
+  return missingContentMessage();
+< object
+
++ askname
+- <call>askName</call>
+
++ (_|_ is ainm dom)
+- <call>storeName <formal></call>
+^ Fáilte romhat isteach, a <call>getName</call>.\s
+^ <call>chatSetup start true</call>
+
 + start
 - Inniu táimid ag foghlaim <b><i>tabhair</i></b>.\s
 ^ Cén aimsir ar mhaith leat a dhéanamh, a <call>getName</call>? <br>
@@ -463,6 +483,9 @@
   - Ceart go leor, a <call>getName</call>\s
   ^ {topic=ceisteach}<call>chatSetup tosu true</call>
 
+  + coibhneasta
+  - {topic=coibhneasta}<call>chatSetup tosu true</call>
+
   + (spleách|spleach)
   - Féachaimid anois ar An Fhoirm Spleách.{topic=spleach}
   ^ <call>chatSetup tosu true</call>
@@ -666,8 +689,9 @@
 
 > topic coibhneasta
   + tosu
-  - NEED TO FILL
+  - <call>getMissingMessage</call>{topic=extraquestions}<call>chatSetup tosu true</call>
 
+  /*
   + quote
   - ..<br>
   ^ ...<br>
@@ -680,7 +704,6 @@
 
   + *
   * <call>answeringQuestions</call> == false =>  Tá brón orm cad a dúirt tú?
-  //* <call>getWrongCount</call> > 3 => <call>getLink</call><call>chatSetup continue true</call>
   * <call>checkAnswer <star></call> == true =><call>changeProgress +</call><call>levelComplete</call><call>getRandomReply</call><call>getProgress</call>
   ^ <call>getRandomQuestion 6</call>
   * <call>checkAnswer <star></call> == false => Mícheart. <call>resetProgress</call><call>triailAris</call><br>
@@ -703,7 +726,7 @@
 
   + master
   - Tá máistreacht agat anois ar an mbriathar “tabhair” san aimsir chaite, a <call>getName</call>. \s
-  ^ {topic=extraquestions}<call>chatSetup tosu true</call>
+  ^ {topic=extraquestions}<call>chatSetup tosu true</call>*/
 
   + briathar saor
   - {topic=level3}<call>chatSetup briatharsaor nowait</call>

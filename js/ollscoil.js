@@ -22,6 +22,9 @@ var record;
 var dialect;
 var autoplay;
 var audioDiv;
+var contents;
+var checkMonkey;
+var monkey;
 
 //for database....
 var currentTopic = "";
@@ -58,6 +61,34 @@ function setup(){
   record = document.querySelector(".record");
   autoplay = document.querySelector(".checkSpan");
   audioDiv = document.querySelector(".audioDiv");
+  contents = document.querySelector(".bot-contents");
+  checkMonkey = document.querySelector(".checkMonkey");
+  monkey = document.querySelector(".monkey-ctn");
+
+  //collapsable menu for the contents
+  var coll = document.getElementsByClassName("bot-collapsable");
+  var i;
+  for(i = 0; i < coll.length; i++){
+    coll[i].addEventListener("click", function(){
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if(content.style.maxHeight){
+        content.style.maxHeight = null;
+      }
+      else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+      //$(".bot-contents").animate({ scrollTop: $(".bot-contents")[0].scrollHeight }, 200);
+    });
+  }
+
+  if(checkMonkey){
+    var checkbox = document.querySelector("#monkeyCheck");
+    checkbox.addEventListener("click", function(){
+      if(checkbox.checked == true) monkey.style.display = "flex";
+      else if(checkbox.checked == false) monkey.style.display = "none";
+    });
+  }
 }
 
 function closeDict(){
@@ -75,6 +106,7 @@ function loadBot(){
     dialect.style.display = "none";
     bot.style.display = "block";
     audioDiv.style.display = "flex";
+    contents.style.display = "block";
     load("BriathraNeamhrialta", "askName");
   }, 200);
 }
@@ -88,17 +120,12 @@ function load(fileId, start, toPlay){
     thisVerb = fileId.substr(0, length);
     if(thisVerb == "bi") thisVerb = "bí";
     else if(thisVerb == "teigh") thisVerb = "téigh";
+    else if(thisVerb == "dean") thisVerb = "déan";
   }
 
   if(toPlay) play = true;
-  if(fileId == "start"){
-    switchTopic = false;
-    currentTopic = fileId;
-  }
-  else{
-    currentTopic = fileId;
-    switchTopic = true;
-  }
+  currentTopic = fileId;
+  sendLogToDb();
 
   console.log("To Load: " + fileId);
   if(keepMessages == false){
@@ -111,8 +138,11 @@ function load(fileId, start, toPlay){
       bot.loadFile(files[i].file).then( () => {
         bot.sortReplies();
         console.log(fileId + " loaded");
-        if(start) chatSetup(start);
-        else chatSetup("start");
+        if(start != null) chatSetup(start);
+        else{
+          if(isNameStored() == false) chatSetup("askname");
+          else chatSetup("start");
+        }
       });
     }
   }
@@ -123,7 +153,7 @@ function loadFromChat(fileId, start){ load(fileId, start); }
 
 function appendTypingIndicator(){
   stillChatting = true;
-  $(".messages").append($("<div class=\"typing-indicator\"><div class=\"user-photo\"><img src=\"monkey.png\" id=\"bot-img\"></div><div class=\"dots\"><p class=\"chat-message\"><span id=\"typ1\"></span><span id=\"typ2\"></span><span id=\"typ3\"></span></p></div></div></div>"));
+  $(".messages").append($("<div class=\"typing-indicator\"><div class=\"user-photo\"><img src=\"img/monkey.png\" id=\"bot-img\"></div><div class=\"dots\"><p class=\"chat-message\"><span id=\"typ1\"></span><span id=\"typ2\"></span><span id=\"typ3\"></span></p></div></div></div>"));
   $(".typing-indicator").delay(1000).fadeOut("fast");
   $(".chatlogs").animate({ scrollTop: $(".chatlogs")[0].scrollHeight }, 200);
 }
@@ -136,12 +166,12 @@ function appendMessage(isBot, isUser, text, showButtons){
   var photoId = "";
   if(isBot == true){
     newMessage.setAttribute("class", "chat bot");
-    photoSrc = "monkey.png";
+    photoSrc = "img/monkey.png";
     photoId = "bot-img";
   }
   else if(isUser == true){
     newMessage.setAttribute("class", "chat user");
-    photoSrc = "student.png";
+    photoSrc = "img/student.png";
     photoId = "user-img";
   }
   newMessage.setAttribute("id", bubbleId);
@@ -163,7 +193,7 @@ function appendMessage(isBot, isUser, text, showButtons){
   var speakerImg = document.createElement("img");
   speakerImg.setAttribute("class", "speaker");
   speakerImg.setAttribute("id", speakerId);
-  speakerImg.src = "speaker.png";
+  speakerImg.src = "img/speaker.png";
   speakerImg.onclick = function(){
     if(isPlaying == false) manualPlay(speakerImg.id, newMessage.id);
   }
@@ -171,7 +201,7 @@ function appendMessage(isBot, isUser, text, showButtons){
 
   var pauseImg = document.createElement("img");
   pauseImg.setAttribute("class", "pauseButton");
-  pauseImg.src = "pause.png"
+  pauseImg.src = "img/pause.png"
   pauseImg.onclick = function(){
     audioPlayer.pause();
     isPlaying = false;
@@ -181,7 +211,7 @@ function appendMessage(isBot, isUser, text, showButtons){
 
   if(isAQuestion){
     dictImg = document.createElement("img");
-    dictImg.src = "dict.png";
+    dictImg.src = "img/dict.png";
     dictImg.setAttribute("class", "dictButton");
     dictImg.style.display = "flex";
     dictImg.onclick = function(){
@@ -268,7 +298,7 @@ function chat(){
       appendTypingIndicator();
       setTimeout(function(){
         appendMessage(true, false, reply);
-        //if(play) audio(reply, bubbleId, false);
+        if(play) audio(reply, bubbleId, false);
         $(".chatlogs").animate({ scrollTop: $(".chatlogs")[0].scrollHeight }, 200);
       }, 1200);
       $(".chatlogs").animate({ scrollTop: $(".chatlogs")[0].scrollHeight }, 200);
